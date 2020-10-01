@@ -6,16 +6,16 @@ hyperskill_project:
 stages:
 - id: 528
   step: 8748
-  is_completed: false
+  is_completed: true
 - id: 529
   step: 8749
-  is_completed: false
+  is_completed: true
 - id: 530
   step: 8750
-  is_completed: false
+  is_completed: true
 - id: 531
   step: 8751
-  is_completed: false
+  is_completed: true
 - id: 532
   step: 8752
   is_completed: false

@@ -222,5 +222,9 @@ files:
     print('Hello, world!')
   learner_created: false
 feedback_link: https://hyperskill.org/projects/96/stages/528/implement
-status: Unchecked
-record: -1
+status: Solved
+feedback:
+  message: Congratulations! Continue on <a href="https://hyperskill.org/projects/96/stages/528/implement">JetBrains
+    Academy</a>
+  time: Thu, 01 Oct 2020 13:11:34 UTC
+record: 1
