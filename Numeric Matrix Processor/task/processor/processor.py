@@ -1,9 +1,9 @@
 def get_matrix_from_input(name):
     matrix = []
-    n, m = [int(x) for x in input("Enter size of {} matrix: > ".format(name)).split()]
+    n, m = [int(matrix) for matrix in input("Enter size of {} matrix: > ".format(name)).split()]
     print("Enter {} matrix:".format(name))
     for _ in range(n):
-        matrix.append([float(x) for x in input("> ").split()])
+        matrix.append([float(matrix) for matrix in input("> ").split()])
     return matrix
 
 
@@ -103,11 +103,41 @@ def transpose_menu():
         result_matrix = transpose_matrix_side_diagonal(matrix_a)
     elif user_choice == 3:
         result_matrix = transpose_matrix_vertical_line(matrix_a)
-    elif user_choice == 4:
+    else:
         result_matrix = transpose_matrix_horizontal_line(matrix_a)
     print("The result is:")
     print_matrix(result_matrix)
     print()
+
+
+def calculate_determinant(matrix):
+    if len(matrix) == 1:
+        return matrix[0][0]
+    elif len(matrix) == 2:
+        determinant = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+        return determinant
+    # elif len(matrix) == 3:
+    #     determinant = matrix[1][1] * matrix[2][2] * matrix[3][3]
+    #     determinant += matrix[2][1] * matrix[3][2] * matrix[1][3]
+    #     determinant += matrix[1][2] * matrix[2][3] * matrix[3][1]
+    #     determinant -= matrix[3][1] * matrix[2][2] * matrix[1][3]
+    #     determinant -= matrix[3][2] * matrix[2][3] * matrix[1][1]
+    #     determinant -= matrix[2][1] * matrix[1][2] * matrix[3][3]
+    #     return determinant
+    else:
+        determinant = 0
+        for j in range(len(matrix)):
+            m1j = []
+            for x in range(len(matrix)):
+                if x != 1:
+                    new_column = []
+                    for y in range(len(matrix)):
+                        if y != j:
+                            new_column.append(matrix[x][y])
+                    m1j.append(new_column)
+            x1j = (-1) ** (1 + j) * calculate_determinant(m1j)
+            determinant += matrix[1][j] * x1j
+        return determinant
 
 
 def main_menu():
@@ -116,9 +146,10 @@ def main_menu():
         print("2. Multiply matrix by a constant")
         print("3. Multiply matrices")
         print("4. Transpose matrix")
+        print("5. Calculate a determinant")
         print("0. Exit")
         user_choice = int(input("Your choice: > "))
-        if 0 <= user_choice <= 4:
+        if 0 <= user_choice <= 5:
             break
         else:
             print("Input not recognized. Please try again")
@@ -157,6 +188,12 @@ def main_menu():
     elif user_choice == 4:
         print()
         transpose_menu()
+    elif user_choice == 5:
+        matrix_a = get_matrix_from_input("the")
+        deter = calculate_determinant(matrix_a)
+        print("The result is:")
+        print(str(deter))
+        print()
     return True
 
 
