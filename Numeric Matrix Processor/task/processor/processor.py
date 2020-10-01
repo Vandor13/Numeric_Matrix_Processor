@@ -1,3 +1,5 @@
+import math
+
 def get_matrix_from_input(name):
     matrix = []
     n, m = [int(matrix) for matrix in input("Enter size of {} matrix: > ".format(name)).split()]
@@ -110,6 +112,18 @@ def transpose_menu():
     print()
 
 
+def get_minor_matrix(matrix, i, j):
+    minor = []
+    for x in range(len(matrix)):
+        if x != i:
+            new_column = []
+            for y in range(len(matrix)):
+                if y != j:
+                    new_column.append(matrix[x][y])
+            minor.append(new_column)
+    return minor
+
+
 def calculate_determinant(matrix):
     if len(matrix) == 1:
         return matrix[0][0]
@@ -127,17 +141,36 @@ def calculate_determinant(matrix):
     else:
         determinant = 0
         for j in range(len(matrix)):
-            m1j = []
-            for x in range(len(matrix)):
-                if x != 1:
-                    new_column = []
-                    for y in range(len(matrix)):
-                        if y != j:
-                            new_column.append(matrix[x][y])
-                    m1j.append(new_column)
+            m1j = get_minor_matrix(matrix, 1, j)
             x1j = (-1) ** (1 + j) * calculate_determinant(m1j)
             determinant += matrix[1][j] * x1j
         return determinant
+
+
+def get_cofactor_matrix(matrix):
+    cofactor_matrix = []
+    for i in range(len(matrix)):
+        new_row = []
+        for j in range(len(matrix)):
+            minor_matrix = get_minor_matrix(matrix, i, j)
+            minor_determinant = calculate_determinant(minor_matrix)
+            cofactor = math.pow(-1, i + j) * minor_determinant
+            new_row.append(cofactor)
+        cofactor_matrix.append(new_row)
+    return cofactor_matrix
+
+
+def get_inverse_matrix(matrix):
+    determinant = calculate_determinant(matrix)
+    # print("determinant is:", determinant)
+    c_matrix = get_cofactor_matrix(matrix)
+    # print("cofactor matrix:")
+    # print_matrix(c_matrix)
+    ct_matrix = transpose_matrix_main_diagonal(c_matrix)
+    # print("transposed cofactor matrix")
+    # print_matrix(ct_matrix)
+    inverse_matrix = multiply_matrix_with_scalar(ct_matrix, 1 / determinant)
+    return inverse_matrix
 
 
 def main_menu():
@@ -147,9 +180,10 @@ def main_menu():
         print("3. Multiply matrices")
         print("4. Transpose matrix")
         print("5. Calculate a determinant")
+        print("6. Inverse matrix")
         print("0. Exit")
         user_choice = int(input("Your choice: > "))
-        if 0 <= user_choice <= 5:
+        if 0 <= user_choice <= 6:
             break
         else:
             print("Input not recognized. Please try again")
@@ -193,6 +227,15 @@ def main_menu():
         deter = calculate_determinant(matrix_a)
         print("The result is:")
         print(str(deter))
+        print()
+    elif user_choice == 6:
+        matrix_a = get_matrix_from_input("the")
+        if calculate_determinant(matrix_a) == 0:
+            print("This matrix doesn't have an inverse.")
+        else:
+            result_matrix = get_inverse_matrix(matrix_a)
+            print("The result is:")
+            print_matrix(result_matrix)
         print()
     return True
 
